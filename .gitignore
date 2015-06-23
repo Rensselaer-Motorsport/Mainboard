@@ -6,6 +6,8 @@
 *.uvopt
 *.uvproj
 *_timing.html
-*.cydsn/codegentemp
-*.cydsn/CortexM0
-*.cydsn/Generated_Source
+**/*.cydsn/codegentemp/
+**/*.cydsn/CortexM3/
+**/*.cydsn/Generated_Source/
+**/*.cydsn/Export/
+Backup
