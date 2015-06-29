@@ -5,6 +5,7 @@
 *.rpt
 *.uvopt
 *.uvproj
+*.svd
 *_timing.html
 **/*.cydsn/codegentemp/
 **/*.cydsn/CortexM3/
