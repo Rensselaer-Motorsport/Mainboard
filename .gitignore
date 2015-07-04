@@ -12,3 +12,5 @@
 **/*.cydsn/Generated_Source/
 **/*.cydsn/Export/
 Backup
+*.dch~
+*.dip~
