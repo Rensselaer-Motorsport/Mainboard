@@ -16,9 +16,12 @@ uint8 compare_occured;
 #define PWM_FREQ 100
 #define NO_OF_MSEC 1000
 
+void outputNum(char*);
+
 int main()
 {
     uint32 input_freq = 0;
+    char buffer [33];
     static uint16 PWM_windowPeriod = 0;
     static uint32 counter_countVal;
     
@@ -27,6 +30,7 @@ int main()
     PWM_Window_Start();
     Counter_Start();
     Clock_PWM_Start();
+    UART_1_Start();
 
     PWM_windowPeriod = (PWM_Window_ReadPeriod() - PWM_Window_ReadCompare());
     PWM_windowPeriod = PWM_windowPeriod/ PWM_FREQ;
@@ -42,7 +46,7 @@ int main()
             input_freq = ((uint32)(NO_OF_MSEC * (uint32)counter_countVal) / (uint32)PWM_windowPeriod);
             compare_occured = 0;
         }
+        sprintf(buffer, "%lu\r\n", input_freq);
+        UART_1_PutString(buffer);
     }
 }
-
-/* [] END OF FILE */
