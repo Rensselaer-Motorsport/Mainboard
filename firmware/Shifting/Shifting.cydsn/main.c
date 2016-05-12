@@ -29,7 +29,6 @@
 
 extern uint8 compare_occured;
 
-int paddle = 0x3;
 int shifts = 0;
 uint8 gear = 0;
 
@@ -38,6 +37,7 @@ void Shift(int paddle);
 int main()
 {
     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
+    int paddle = 0x3;
     uint32 tach_freq = 0;
     static uint16 PWM_windowPeriod = 0;
     static uint32 counter_countVal;
@@ -46,15 +46,18 @@ int main()
     PWM_Window_Start();
     Counter_Start();
     Clock_PWM_Start();
+    CyWdtStart(CYWDT_1024_TICKS,CYWDT_LPMODE_NOCHANGE);
     
     PWM_windowPeriod = (PWM_Window_ReadPeriod() - PWM_Window_ReadCompare());
     PWM_windowPeriod = PWM_windowPeriod/ PWM_FREQ;
+    
+    Engage_Clutch_Write(0);
     
     CyGlobalIntEnable; //*/ /* Uncomment this line to enable global interrupts. */
     for(;;)
     {
         /* Place your application code here. */
-        while (!Accel_Read()) {
+        //while (!Accel_Read()) {
             paddle = Steering_Wheel_Read();
             
             if (paddle != 0x3) {
@@ -65,10 +68,10 @@ int main()
         
             if (Clutch_Paddle_Read() == 0x0) {
                 CyDelay(DEBOUNCE_DELAY);
-                Shift(NEUTRAL_BUTTON);
+                if (Clutch_Paddle_Read() == 0x0) Shift(NEUTRAL_BUTTON);
                 while (Clutch_Paddle_Read() == 0x0);
             }
-        }
+        /*}
         while (Accel_Read()) {
             
             if (compare_occured == 1 && !Clutch_Paddle_Read()) {
@@ -79,7 +82,7 @@ int main()
                     Shift(UP_SHIFT_PADDLE);
                 compare_occured = 0;
             }
-        }
+        }*/
         
         CyDelayUs(200);
     }
