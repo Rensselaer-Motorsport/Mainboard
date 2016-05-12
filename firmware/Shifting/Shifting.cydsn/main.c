@@ -11,7 +11,7 @@
 */
 #include <project.h>
 
-#define DEBOUNCE_DELAY 13
+#define HOLD_DELAY 13
 #define CLUTCH_ENGAGE_DELAY_UP 70
 #define CLUTCH_ENGAGE_DELAY_DOWN 150
 #define CLUTCH_RELEASE_DELAY 20
@@ -57,21 +57,21 @@ int main()
     for(;;)
     {
         /* Place your application code here. */
-        //while (!Accel_Read()) {
+        while (!Accel_Read()) {
             paddle = Steering_Wheel_Read();
             
             if (paddle != 0x3) {
-                CyDelay(DEBOUNCE_DELAY);
+                CyDelay(HOLD_DELAY);
                 if (paddle == Steering_Wheel_Read()) Shift(paddle);
                 while (paddle == Steering_Wheel_Read());
             }
         
             if (Clutch_Paddle_Read() == 0x0) {
-                CyDelay(DEBOUNCE_DELAY);
+                CyDelay(HOLD_DELAY);
                 if (Clutch_Paddle_Read() == 0x0) Shift(NEUTRAL_BUTTON);
                 while (Clutch_Paddle_Read() == 0x0);
             }
-        /*}
+        }
         while (Accel_Read()) {
             
             if (compare_occured == 1 && !Clutch_Paddle_Read()) {
@@ -82,7 +82,7 @@ int main()
                     Shift(UP_SHIFT_PADDLE);
                 compare_occured = 0;
             }
-        }*/
+        }
         
         CyDelayUs(200);
     }
